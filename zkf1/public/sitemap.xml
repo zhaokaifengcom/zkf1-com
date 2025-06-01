@@ -2,10 +2,28 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://example.org/categories/</loc>
+    <loc>https://zkf1.com/categories/</loc>
+    <lastmod>2025-06-02T00:51:00+08:00</lastmod>
   </url><url>
-    <loc>https://example.org/</loc>
+    <loc>https://zkf1.com/post/</loc>
+    <lastmod>2025-06-02T00:51:00+08:00</lastmod>
   </url><url>
-    <loc>https://example.org/tags/</loc>
+    <loc>https://zkf1.com/tags/</loc>
+    <lastmod>2025-06-02T00:51:00+08:00</lastmod>
+  </url><url>
+    <loc>https://zkf1.com/post/01/</loc>
+    <lastmod>2025-06-02T00:51:00+08:00</lastmod>
+  </url><url>
+    <loc>https://zkf1.com/categories/%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97/</loc>
+    <lastmod>2025-06-02T00:51:00+08:00</lastmod>
+  </url><url>
+    <loc>https://zkf1.com/tags/%E8%80%83%E7%A0%94%E6%95%B0%E5%AD%A6/</loc>
+    <lastmod>2025-06-02T00:51:00+08:00</lastmod>
+  </url><url>
+    <loc>https://zkf1.com/</loc>
+    <lastmod>2025-06-02T00:51:00+08:00</lastmod>
+  </url><url>
+    <loc>https://zkf1.com/tags/%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6/</loc>
+    <lastmod>2025-06-02T00:51:00+08:00</lastmod>
   </url>
 </urlset>

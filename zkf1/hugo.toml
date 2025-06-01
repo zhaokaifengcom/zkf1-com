@@ -1,3 +1,4 @@
-baseURL = 'https://example.org/'
+baseURL = 'https://zkf1.com'
 languageCode = 'en-us'
-title = 'My New Hugo Site'
+title = '荒原之梦1号储备站'
+themes = 'hugo-book'
