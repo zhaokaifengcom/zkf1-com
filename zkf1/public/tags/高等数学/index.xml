@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>高等数学 on 荒原之梦1号储备站</title>
-    <link>https://zkf1.com/tags/%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6/</link>
+    <link>http://localhost:1313/tags/%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6/</link>
     <description>Recent content in 高等数学 on 荒原之梦1号储备站</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 02 Jun 2025 00:51:00 +0800</lastBuildDate>
-    <atom:link href="https://zkf1.com/tags/%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>我的第一篇文章</title>
-      <link>https://zkf1.com/post/01/</link>
+      <link>http://localhost:1313/post/01/</link>
       <pubDate>Mon, 02 Jun 2025 00:51:00 +0800</pubDate>
-      <guid>https://zkf1.com/post/01/</guid>
+      <guid>http://localhost:1313/post/01/</guid>
       <description>&lt;p&gt;这里是你的Markdown内容。&lt;/p&gt;&#xA;&lt;p&gt;测试 Test&lt;/p&gt;</description>
     </item>
   </channel>
