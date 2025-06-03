@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>考研数学学习平台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-green: #2c7a2c;
+            --light-green: #4caf50;
+            --hover-green: #45a049;
+            --dark-green: #1b5e20;
+            --white: #ffffff;
+            --light-gray: #f5f5f5;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --shadow: rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            --primary-green: #4caf50;
+            --light-green: #66bb6a;
+            --hover-green: #5cb85c;
+            --dark-green: #2e7d32;
+            --white: #1a1a1a;
+            --light-gray: #2d2d2d;
+            --text-dark: #e0e0e0;
+            --text-light: #b0b0b0;
+            --shadow: rgba(255,255,255,0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--white);
+            transition: var(--transition);
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+            box-shadow: 0 2px 10px var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            color: var(--white);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            height: 40px;
+        }
+
+        .logo img {
+            height: 100%;
+            width: auto;
+            object-fit: contain;
+            transition: var(--transition);
+        }
+
+        .logo:hover img {
+            transform: scale(1.05);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 0;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 1rem 1.5rem;
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            border-radius: 8px;
+        }
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-2px);
+        }
+
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--white);
+            min-width: 200px;
+            box-shadow: 0 8px 25px var(--shadow);
+            border-radius: 8px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: var(--transition);
+            overflow: hidden;
+        }
+
+        .nav-item:hover .dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-link {
+            display: block;
+            padding: 0.8rem 1.5rem;
+            color: var(--text-dark);
+            text-decoration: none;
+            transition: var(--transition);
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .dropdown-link:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-link:hover {
+            background: var(--light-green);
+            color: var(--white);
+            padding-left: 2rem;
+        }
+
+        .theme-toggle {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: var(--white);
+            padding: 0.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255,255,255,0.3);
+            transform: rotate(180deg);
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Carousel Styles */
+        .carousel-container {
+            max-width: 960px;
+            margin: 2rem auto;
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px var(--shadow);
+        }
+
+        .carousel {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            height: 250px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+            color: white;
+            padding: 1.5rem;
+        }
+
+        .carousel-indicators {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+        }
+
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .indicator.active {
+            background: var(--light-green);
+            transform: scale(1.2);
+        }
+
+        /* CTA Button */
+        .cta-section {
+            text-align: center;
+            padding: 3rem 0;
+            background: var(--light-gray);
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(45deg, var(--primary-green), var(--light-green));
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            box-shadow: 0 4px 15px var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px var(--shadow);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .cta-button {
+            animation: pulse 2s infinite;
+        }
+
+        /* Content Sections */
+        .content-section {
+            padding: 4rem 0;
+        }
+
+        .section-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .content-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px var(--shadow);
+            transition: var(--transition);
+            border-top: 4px solid var(--light-green);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-green), var(--light-green), var(--primary-green));
+            background-size: 200% 100%;
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .content-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px var(--shadow);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-green);
+            margin-bottom: 1rem;
+        }
+
+        .card-text {
+            color: var(--text-light);
+            line-height: 1.8;
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, var(--dark-green), var(--primary-green));
+            color: var(--white);
+            padding: 3rem 0 1rem;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--white);
+        }
+
+        .footer-section p, .footer-section a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            line-height: 1.8;
+        }
+
+        .footer-section a:hover {
+            color: var(--white);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-container {
+                position: relative;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .nav-menu {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--primary-green);
+                flex-direction: column;
+                max-height: 0;
+                overflow: hidden;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+                box-shadow: 0 8px 25px var(--shadow);
+                border-radius: 0 0 15px 15px;
+            }
+
+            .nav-menu.active {
+                max-height: 500px;
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .nav-item {
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+
+            .nav-item:last-child {
+                border-bottom: none;
+            }
+
+            .nav-link {
+                padding: 1rem 1.5rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .nav-link::after {
+                content: '▼';
+                font-size: 0.8rem;
+                transform: rotate(-90deg);
+                transition: transform 0.3s ease;
+            }
+
+            .nav-item.active .nav-link::after {
+                transform: rotate(0deg);
+            }
+
+            .dropdown {
+                position: static;
+                opacity: 0;
+                visibility: hidden;
+                max-height: 0;
+                overflow: hidden;
+                transform: none;
+                box-shadow: none;
+                background: rgba(0,0,0,0.1);
+                transition: all 0.3s ease;
+                margin: 0;
+            }
+
+            .nav-item.active .dropdown {
+                opacity: 1;
+                visibility: visible;
+                max-height: 200px;
+            }
+
+            .dropdown-link {
+                color: var(--white);
+                border-color: rgba(255,255,255,0.1);
+                padding: 0.8rem 2rem;
+                display: block;
+            }
+
+            .dropdown-link:hover {
+                background: rgba(255,255,255,0.1);
+                padding-left: 2.5rem;
+            }
+
+            .carousel-container {
+                margin: 1rem;
+            }
+
+            .carousel-slide {
+                height: 200px;
+            }
+
+            .section-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .content-card {
+                padding: 1.5rem;
+            }
+
+            .cta-button {
+                padding: 0.8rem 2rem;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            .logo {
+                height: 35px;
+            }
+
+            .carousel-slide {
+                height: 150px;
+            }
+
+            .content-card {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav-container">
+                <a href="https://zhaokaifeng.com/" class="logo">
+                    <img src="asset/logo.png" alt="考研数学">
+                </a>
+                <ul class="nav-menu" id="navMenu">
+                    <li class="nav-item">
+                        <a href="https://zhaokaifeng.com/" class="nav-link">官网</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://zhaokaifeng.com/further-mathematics-latest-posts-page1/" class="nav-link">高等数学</a>
+                        <div class="dropdown">
+                            <a href="#" class="dropdown-link">AAA</a>
+                            <a href="#" class="dropdown-link">AAA</a>
+                            <a href="#" class="dropdown-link">AAA</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://zhaokaifeng.com/index/linear-algebra-latest-posts-page1/" class="nav-link">线性代数</a>
+                        <div class="dropdown">
+                            <a href="#" class="dropdown-link">AAA</a>
+                            <a href="#" class="dropdown-link">AAA</a>
+                            <a href="#" class="dropdown-link">AAA</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://zhaokaifeng.com/index/probability-and-statistics-latest-posts-page1/" class="nav-link">概率统计</a>
+                        <div class="dropdown">
+                            <a href="#" class="dropdown-link">AAA</a>
+                            <a href="#" class="dropdown-link">AAA</a>
+                            <a href="#" class="dropdown-link">AAA</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">数学真题</a>
+                        <div class="dropdown">
+                            <a href="#" class="dropdown-link">AAA</a>
+                            <a href="#" class="dropdown-link">AAA</a>
+                            <a href="#" class="dropdown-link">AAA</a>
+                        </div>
+                    </li>
+                </ul>
+                <button class="theme-toggle" id="themeToggle">🌙</button>
+                <button class="mobile-menu-toggle" id="mobileToggle">☰</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Carousel -->
+    <div class="carousel-container">
+        <div class="carousel" id="carousel">
+            <div class="carousel-slide">
+                <img src="https://images.unsplash.com/photo-1509228627152-72ae9ae6848d?w=960&h=250&fit=crop" alt="数学学习">
+                <div class="carousel-overlay">
+                    <h3>专业数学辅导</h3>
+                    <p>资深教师团队，助您考研成功</p>
+                </div>
+            </div>
+            <div class="carousel-slide">
+                <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=960&h=250&fit=crop" alt="在线学习">
+                <div class="carousel-overlay">
+                    <h3>在线学习平台</h3>
+                    <p>随时随地，高效学习数学知识</p>
+                </div>
+            </div>
+            <div class="carousel-slide">
+                <img src="https://images.unsplash.com/photo-1596495578065-6e0763fa1178?w=960&h=250&fit=crop" alt="考试准备">
+                <div class="carousel-overlay">
+                    <h3>考试冲刺辅导</h3>
+                    <p>针对性训练，提高考试成绩</p>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-indicators">
+            <span class="indicator active" data-slide="0"></span>
+            <span class="indicator" data-slide="1"></span>
+            <span class="indicator" data-slide="2"></span>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <a href="https://zhaokaifeng.com/" class="cta-button">直达考研数学官网</a>
+        </div>
+    </section>
+
+    <!-- Content Section -->
+    <section class="content-section">
+        <div class="container">
+            <div class="section-grid">
+                <div class="content-card">
+                    <span class="card-icon">🌟</span>
+                    <h3 class="card-title">课程特色</h3>
+                    <p class="card-text">
+                        我们的课程体系完善，涵盖高等数学、线性代数、概率统计三大核心模块。
+                        采用循序渐进的教学方法，从基础概念到高难度题型，层层递进。
+                        配备专业教师团队，拥有丰富的考研辅导经验，能够精准把握考试重点和难点。
+                        提供个性化学习方案，根据学员基础制定专属学习计划。
+                    </p>
+                </div>
+                <div class="content-card">
+                    <span class="card-icon">📚</span>
+                    <h3 class="card-title">课程体系</h3>
+                    <p class="card-text">
+                        基础阶段：夯实数学基础，理解核心概念和基本方法。
+                        强化阶段：系统梳理知识点，掌握解题技巧和方法。
+                        冲刺阶段：真题演练，查漏补缺，提升应试能力。
+                        每个阶段都配有相应的练习题和模拟测试，确保学习效果。
+                        提供在线答疑服务，及时解决学习中遇到的问题。
+                    </p>
+                </div>
+                <div class="content-card">
+                    <span class="card-icon">💬</span>
+                    <h3 class="card-title">学员反馈</h3>
+                    <p class="card-text">
+                        "老师讲解细致入微，复杂的数学概念变得简单易懂。" - 李同学
+                        "课程安排合理，循序渐进，让我从数学零基础到考研高分。" - 王同学
+                        "在线学习平台功能完善，随时可以复习和练习。" - 张同学
+                        95%的学员表示课程内容对考研数学帮助很大，88%的学员数学成绩有显著提升。
+                        我们致力于为每一位学员提供最优质的数学学习体验。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>联系我们</h3>
+                    <p>电话：18603833910</p>
+                    <p>邮箱：hyzmky@163.com</p>
+                    <p>地址：河南省郑州市金水区</p>
+                </div>
+                <div class="footer-section">
+                    <h3>快速链接</h3>
+                    <p><a href="#">关于我们</a></p>
+                    <p><a href="#">课程介绍</a></p>
+                    <p><a href="#">师资团队</a></p>
+                    <p><a href="#">学员服务</a></p>
+                </div>
+                <div class="footer-section">
+                    <h3>关注我们</h3>
+                    <p>公众号：荒原之梦考研数学</p>
+                    <p>知 乎：荒原之梦考研数学</p>
+                    <p>抖 音：荒原之梦考研数学</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 考研数学学习平台. 版权所有</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+
+        themeToggle.addEventListener('click', () => {
+            if (body.hasAttribute('data-theme')) {
+                body.removeAttribute('data-theme');
+                themeToggle.textContent = '🌙';
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeToggle.textContent = '☀️';
+            }
+        });
+
+        // Mobile Menu Toggle
+        const mobileToggle = document.getElementById('mobileToggle');
+        const navMenu = document.getElementById('navMenu');
+        const navItems = document.querySelectorAll('.nav-item');
+
+        mobileToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            // Close all dropdowns when menu closes
+            if (!navMenu.classList.contains('active')) {
+                navItems.forEach(item => {
+                    item.classList.remove('active');
+                });
+            }
+        });
+
+        // Mobile dropdown functionality
+        navItems.forEach(item => {
+            const navLink = item.querySelector('.nav-link');
+            const dropdown = item.querySelector('.dropdown');
+            
+            if (dropdown) {
+                navLink.addEventListener('click', (e) => {
+                    // Only prevent default on mobile when there's a dropdown
+                    if (window.innerWidth <= 768) {
+                        e.preventDefault();
+                        
+                        // Close other dropdowns
+                        navItems.forEach(otherItem => {
+                            if (otherItem !== item) {
+                                otherItem.classList.remove('active');
+                            }
+                        });
+                        
+                        // Toggle current dropdown
+                        item.classList.toggle('active');
+                    }
+                });
+            }
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            const header = document.querySelector('.header');
+            if (!header.contains(e.target)) {
+                navMenu.classList.remove('active');
+                navItems.forEach(item => {
+                    item.classList.remove('active');
+                });
+            }
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                navMenu.classList.remove('active');
+                navItems.forEach(item => {
+                    item.classList.remove('active');
+                });
+            }
+        });
+
+        // Carousel
+        const carousel = document.getElementById('carousel');
+        const indicators = document.querySelectorAll('.indicator');
+        let currentSlide = 0;
+        const totalSlides = 3;
+
+        function updateCarousel() {
+            carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
+            indicators.forEach((indicator, index) => {
+                indicator.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateCarousel();
+        }
+
+        // Auto-play carousel
+        setInterval(nextSlide, 3000);
+
+        // Indicator click events
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                currentSlide = index;
+                updateCarousel();
+            });
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Add animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe content cards
+        document.querySelectorAll('.content-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
